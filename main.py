@@ -1,5 +1,6 @@
 import requests
 import folium
+import time
 from pyfiglet import Figlet
 
 
@@ -28,14 +29,20 @@ def get_info_by_ip(ip):
         area = folium.Map(location=[data["LAT"], data["LON"]], zoom_start=15)
         folium.Marker(location=[data["LAT"], data["LON"]], icon=folium.Icon(
             color="red", icon="glyphicon-record", iconColor="white")).add_to(area)
-        area.save(f'{data["CITY"]}_{data["IP"]}.html')
+        area.save(
+            f'{time.strftime("%d-%m-%Y %H;%M.%S")}_{data["CITY"]}_{data["IP"]}.html')
 
     except requests.exceptions.ConnectionError:
-        print("Huston, we have got connection troubles!!")
+        print("Huston, we`ve got connection troubles!!")
 
 
-preview_text = Figlet(font="slant")
-print(preview_text.renderText("IP_INFO"))
-ip = input("Please, enter IP: ")
-print("-" * 30)
-get_info_by_ip(ip=ip)
+def main():
+    preview_text = Figlet(font="slant")
+    print(preview_text.renderText("IP_INFO"))
+    ip = input("Please, enter IP: ")
+    print("-" * 30)
+    get_info_by_ip(ip=ip)
+
+
+if __name__ == '__main__':
+    main()
